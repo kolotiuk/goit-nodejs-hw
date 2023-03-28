@@ -1,7 +1,34 @@
-const contacts = require("./contacts");
+const argv = require("yargs").argv;
+const contactsOperations = require("./contacts");
 
-// contacts.listContacts();
-// contacts.getContactById("drsAJ4SHPYqZeG-83QTVW");
-// contacts.removeContact("5418561e-57fd-4883-97fb-6cb6436cece6");
+const invokeAction = async ({ action, id, name, email, phone }) => {
+  switch (action) {
+    case "list":
+      const contacts = await contactsOperations.listContacts();
+      break;
 
-contacts.addContact("Ihor", "goit@gmai.com", "+380113151");
+    case "get":
+      const contactById = await contactsOperations.getContactById(id);
+      if (!contactById) {
+        throw new Error(`Contact with id=${id} not found`);
+      }
+      break;
+
+    case "add":
+      const newContact = await contactsOperations.addContact(
+        name,
+        email,
+        phone
+      );
+      break;
+
+    case "remove":
+      const removeContact = await contactsOperations.removeContact(id);
+      break;
+
+    default:
+      console.warn("\x1B[31m Unknown action type!");
+  }
+};
+
+invokeAction(argv);
