@@ -5,6 +5,7 @@ const invokeAction = async ({ action, id, name, email, phone }) => {
   switch (action) {
     case "list":
       const contacts = await contactsOperations.listContacts();
+      console.table(contacts);
       break;
 
     case "get":
@@ -12,6 +13,7 @@ const invokeAction = async ({ action, id, name, email, phone }) => {
       if (!contactById) {
         throw new Error(`Contact with id=${id} not found`);
       }
+      console.log("contactById:", contactById)
       break;
 
     case "add":
@@ -20,10 +22,12 @@ const invokeAction = async ({ action, id, name, email, phone }) => {
         email,
         phone
       );
+      console.log("newContact:", newContact)
       break;
 
     case "remove":
       const removeContact = await contactsOperations.removeContact(id);
+      console.log("removeContact:", removeContact)
       break;
 
     default:
